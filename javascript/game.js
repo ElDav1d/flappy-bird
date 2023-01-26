@@ -7,6 +7,8 @@ class Game {
 
     this.tubosArray = [];
     this.frames = 1; // CONTROL PASSED FRAMES
+    this.tuboSeparation = 300;
+    this.tuboYPosFactor = -100;
   }
 
   drawBg = () => {
@@ -24,12 +26,32 @@ class Game {
     const hadPassed2Seconds = this.frames % 120 === 0 // if 1 fps 
 
     if (this.tubosArray.length === 0 || hadPassed2Seconds) {
-      const tuboParaAñadir = new Tubo();
-      this.tubosArray.push(tuboParaAñadir);
+        const randomPosY = Math.random() * (this.tuboYPosFactor) //negative en order to move ouside Y 
+      const tuboDeArriba = new Tubo(randomPosY, true)
+      this.tubosArray.push(tuboDeArriba);
+
+      const tuboDeAbajo = new Tubo(tuboDeArriba.y + this.tuboSeparation, false);
+      this.tubosArray.push(tuboDeAbajo);
     }
+
+    // optimise remove out of screen elements from array
   };
 
   // colisiones con tubos
+  checkPollitoCollision = () => {
+    this.tubosArray.forEach (tubo => {
+        // compara si cada tubo colisiona con pollito
+        if (
+            tubo.x < this.pollito.x + this.pollito.w &&
+            tubo.x + tubo.w > this.pollito.x &&
+            tubo.y < this.pollito.y + this.pollito.h &&
+            tubo.h + tubo.y > this.pollito.y
+          ) {
+            // Collision detected!
+            console.log('boooom');;
+          }
+    })
+  }
   // colision suelo
   // gameOver => enviar a la pantalla final
   // botón de pausa
@@ -48,14 +70,15 @@ class Game {
     this.pollito.gravityPollito();
     this.tubosAparecen();
     this.tubosArray.forEach(tubo => {
-      tubo.moveTubo();
+      tubo.moveTubo(); //separating draw and move => GETTING 2 Tubos SIMULTANEOUSLY
     });
+    this.checkPollitoCollision()
 
     // 3 element drawing
     this.drawBg(); //CARE ABOUT DRAWING ORDER!! => OVERLAPS
     this.pollito.drawPollito();
     this.tubosArray.forEach(tubo => {
-      tubo.drawTubo();
+      tubo.drawTubo(); //separating draw and move => GETTING 2 Tubos SIMULTANEOUSLY
     });
 
     // 4 recursion and control
