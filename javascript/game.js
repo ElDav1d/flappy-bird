@@ -4,7 +4,9 @@ class Game {
     this.bg.src = "./images/bg.png";
 
     this.pollito = new Pollito();
-    // this.tubos= new Tubo;
+
+    this.tubosArray = [];
+    this.frames = 1; // CONTROL PASSED FRAMES
   }
 
   drawBg = () => {
@@ -15,14 +17,20 @@ class Game {
     context.clearRect(0, 0, canvas.width, canvasheight);
   };
 
-  // tubos avanzan
-  // propiedades tubos:
-  // pollito tiene efecto gravedad
-  // pollito sube
-  // propiedades pollito
+  // spawning tubos
+
+  tubosAparecen = () => {
+    // check for time since last element is added (VS use position on screen)
+    const hadPassed2Seconds = this.frames % 120 === 0 // if 1 fps 
+
+    if (this.tubosArray.length === 0 || hadPassed2Seconds) {
+      const tuboParaAñadir = new Tubo();
+      this.tubosArray.push(tuboParaAñadir);
+    }
+  };
+
   // colisiones con tubos
   // colision suelo
-  // spawning tubos
   // gameOver => enviar a la pantalla final
   // botón de pausa
 
@@ -33,13 +41,22 @@ class Game {
   // cambio de dirección => animaciones
 
   gameLoop = () => {
+    this.frames++
     // 1 clean canvas
+
     // 2 element motion and action
     this.pollito.gravityPollito();
+    this.tubosAparecen();
+    this.tubosArray.forEach(tubo => {
+      tubo.moveTubo();
+    });
 
     // 3 element drawing
-    this.drawBg();
+    this.drawBg(); //CARE ABOUT DRAWING ORDER!! => OVERLAPS
     this.pollito.drawPollito();
+    this.tubosArray.forEach(tubo => {
+      tubo.drawTubo();
+    });
 
     // 4 recursion and control
     requestAnimationFrame(this.gameLoop);

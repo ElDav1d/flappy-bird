@@ -1,5 +1,6 @@
 class Pollito {
   constructor() {
+    // propiedades pollito
     this.x = 50;
     this.y = 50;
     this.h = 35;
@@ -14,10 +15,13 @@ class Pollito {
     context.drawImage(this.image, this.x, this.y, this.w, this.h);
   };
 
+  // pollito tiene efecto gravedad
+
   gravityPollito = () => {
     this.y += this.speed;
   };
 
+  // pollito sube
   jumpPollito = () => {
     this.y -= this.jumpSpeed;
   };
