@@ -11,6 +11,10 @@ class Game {
     context.drawImage(this.bg, 0, 0, canvas.width, canvas.height);
   };
 
+  clearCanvas = () => {
+    context.clearRect(0, 0, canvas.width, canvasheight);
+  };
+
   // tubos avanzan
   // propiedades tubos:
   // pollito tiene efecto gravedad
@@ -31,11 +35,12 @@ class Game {
   gameLoop = () => {
     // 1 clean canvas
     // 2 element motion and action
+    this.pollito.gravityPollito();
+
     // 3 element drawing
     this.drawBg();
     this.pollito.drawPollito();
 
-    
     // 4 recursion and control
     requestAnimationFrame(this.gameLoop);
   };
