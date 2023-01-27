@@ -18,7 +18,13 @@ class Pollito {
   // pollito tiene efecto gravedad
 
   gravityPollito = () => {
-    this.y += this.speed;
+    const isTouchingCeil = this.y < 0;
+
+    if (isTouchingCeil) {
+      this.y = 0; //
+    } else {
+      this.y += this.speed;
+    }
   };
 
   // pollito sube
