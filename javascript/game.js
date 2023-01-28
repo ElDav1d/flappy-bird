@@ -41,10 +41,10 @@ class Game {
   // optimise remove out of screen elements from array
   
   removeTubes = () => {
-    if (this.tubosArray[0].x < 0 + this.tubosArray[0].w < 0) {
-      this.tubosArray.shift();
+    if (this.tubosArr[0].x + this.tubosArr[0].w < 0) {
+      this.tubosArr.shift()
     }
-  };
+  }
 
   // colisiones con tubos
   checkPollitoCollisionTubo = () => {
